@@ -137,6 +137,9 @@ module.exports = {
 				this.pageCompare.goto(`${config.urlChange}${route}`, {waitUntil: options.waitUntil})
 			]);
 		}
+		const waitForJSbase = this.pageBase.waitForFunction('window.status === "ready" && typeof window.$ !== undefined');
+		const waitForJScompare = this.pageCompare.waitForFunction('window.status === "ready" && typeof window.$ !== undefined');
+		await Promise.all([waitForJSbase, waitForJScompare]);
 		await this.pageBase.$eval('body', function (e) {
 			$('.live-relative-timestamp').removeClass('live-relative-timestamp').text('5 minutes ago');
 			$(':focus').blur();
